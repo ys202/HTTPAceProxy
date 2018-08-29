@@ -22,6 +22,7 @@ import os, sys, glob
 # Uppend the directory for custom modules at the front of the path.
 base_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, os.path.join(base_dir, 'modules'))
+sys.path.insert(0, os.path.join(base_dir, 'modules/aceclient'))
 for wheel in glob.glob(os.path.join(base_dir, 'modules/wheels/') + '*.whl'): sys.path.insert(0, wheel)
 
 import logging, traceback
@@ -39,10 +40,8 @@ from base64 import b64encode
 from modules.PluginInterface import AceProxyPlugin
 
 import aceclient
-from aceclient.clientcounter import ClientCounter
-import aceconfig
+from modules.aceclient.clientcounter import ClientCounter
 from aceconfig import AceConfig
-
 
 class GeventHTTPServer(HTTPServer):
 
@@ -465,9 +464,9 @@ if not AceStuff.ace:
              break
      except requests.exceptions.ConnectionError: pass
    if not Engine_found: logger.error('Not found any Ace Stream engine!')
-else:
-   AceConfig.acehostslist[0][0] = get_ip_address() if AceConfig.httphost in ('', '0.0.0.0') else AceConfig.httphost
-   AceConfig.acehost, AceConfig.aceHTTPport = AceConfig.acehostslist[0][0], AceConfig.acehostslist[0][2]
+#else:
+#   AceConfig.acehostslist[0][0] = get_ip_address() if AceConfig.httphost in ('', '0.0.0.0') else AceConfig.httphost
+#   AceConfig.acehost, AceConfig.aceHTTPport = AceConfig.acehostslist[0][0], AceConfig.acehostslist[0][2]
 
 # Refreshes the acestream.port file .....
 if ace_pid and AceConfig.osplatform == 'Windows': detectPort()

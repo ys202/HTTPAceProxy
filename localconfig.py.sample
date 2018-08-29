@@ -1,11 +1,12 @@
 '''
-AceProxy configuration scrip Edit this file.
+localconfig.py - AceProxy configuration script
+You can edit this file to override default settings
 '''
+import logging
+from aceconfig import AceDefConfig
+from acemessages import AceConst
 
-import acedefconfig, logging
-from aceclient.acemessages import AceConst
-
-class AceConfig(acedefconfig.AceDefConfig):
+class AceLocalConfig(AceDefConfig):
     # ----------------------------------------------------
     # Ace Stream Engine configuration
     # ----------------------------------------------------
@@ -24,9 +25,9 @@ class AceConfig(acedefconfig.AceDefConfig):
     # Example string for AceEngine parameters ['AceEngineIP', aceAPIport, aceHTTPport]
     # You can change Engine API port or Engine HTTP port by using --api-port= or --http-port= in startup parameters.
     # Default values is --api-port=62062 --http-port=6878
-    acehostslist =(
-                   ['127.0.0.1', 62062, 6878],
-                   )
+    acehostslist = (
+	['127.0.0.1', 62062, 6878],
+	)
     # Ace Stream age parameter (LT_13, 13_17, 18_24, 25_34, 35_44, 45_54,
     # 55_64, GT_65)
     aceage = AceConst.AGE_35_44
@@ -135,16 +136,15 @@ class AceConfig(acedefconfig.AceDefConfig):
     # to detect MIME-type or something before playing which Ace Stream handles badly.
     # We send them 200 OK and do nothing.
     # We add their User-Agents here
-    #
-    fakeuas = ('Mozilla/5.0 IMC plugin Macintosh', )
-    #
     @staticmethod
     def isFakeRequest(path, params, headers):
+        fakeuas = ('Mozilla/5.0 IMC plugin Macintosh', )
+
         useragent = headers.get('User-Agent')
 
         if not useragent:
             return False
-        elif useragent in AceConfig.fakeuas:
+        elif useragent in fakeuas:
             return True
        # Samsung ES series
         elif useragent == 'Lavf/55.33.100' and headers.get('Range') != 'bytes=0-':
@@ -163,3 +163,4 @@ class AceConfig(acedefconfig.AceDefConfig):
          # Dune 301
         elif useragent == 'DuneHD/1.0' and headers.get('Range') != 'bytes=0-':
             return True
+

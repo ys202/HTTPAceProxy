@@ -12,7 +12,7 @@ import time
 import random
 
 from aceconfig import AceConfig
-from .acemessages import *
+from acemessages import *
 
 class AceException(Exception):
     '''
